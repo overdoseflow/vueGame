@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charser="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie-edge">
+    <title>Sudoku | Overdoseflow</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+
+    <link rel="stylesheet" href="bundle/sudoku.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-72522075-2', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+  
+
+    <div id="app">
+      <div class="dialog" v-if="game === null">
+        <p>Lütfen zorluk derecesini seçiniz: </p>
+        <p v-if="hasExistingGame()">
+          <button @click="continueGameClick">Kaldığın yerden devam et</button>
+        </p>
+        <button @click="difficultyClick" data-difficulty="easy">Kolay</button>
+        <button @click="difficultyClick" data-difficulty="medium">Orta</button>
+        <button @click="difficultyClick" data-difficulty="hard">Zor</button>
+      </div>
+      <table class="sudoku-table" v-else>
+        <tbody>
+          <tr v-for="(irow, row) in game">
+            <td v-for="(icell, cell) in row"
+              :class="['i'+irow, 'j'+icell, cell.editable ? 'editable': 'not-editable', cell.hasConflict ? 'has-conflict' : 'no-conflict']">
+              <input type="tel" :value="cell.value" :readonly="!cell.editable"
+                :data-i="irow" :data-j="icell"
+                @click="cellClick"
+                @keyup="cellKeyUp" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="controls" v-if="game !== null">
+        <p><a href="#" @click="backClick">Geri</a></p>
+        <p>{{formatedTime()}}</p>
+      </div>
+    </div>
+
+    <script src="bundle/sudoku-min.js"></script>
+  </body>
+</html>
